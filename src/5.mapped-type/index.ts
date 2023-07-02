@@ -55,3 +55,22 @@ type ReadonlyMovie = {
 type NoReadonlyMovie = {
   -readonly [Property in keyof Movie]: Movie[Property];
 };
+
+type Stage = "default" | "play" | "someOtherStage" | "pause" | "loading";
+
+type UseStage = { currentStage: Stage } & {
+  [CurrentStage in Stage as `switchTo${Capitalize<CurrentStage>}`]: () => CurrentStage;
+};
+
+function useStage(): UseStage {
+  let stage: Stage = "default";
+
+  return {
+    currentStage: stage,
+    switchToDefault: () => (stage = "default"),
+    switchToPlay: () => (stage = "play"),
+    switchToSomeOtherStage: () => (stage = "someOtherStage"),
+    switchToPause: () => (stage = "pause"),
+    switchToLoading: () => (stage = "loading"),
+  };
+}
